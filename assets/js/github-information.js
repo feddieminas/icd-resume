@@ -38,6 +38,8 @@ function repoInformationHTML(repos) {
 
 
 function fetchGitHubInformation(event) {
+    $("#gh-user-data").html(""); // do to reset data every time is called. like an i=0 
+    $("#gh-repo-data").html("");
     
     var username = $("#gh-username").val();
     if (!username) {
@@ -80,3 +82,5 @@ function fetchGitHubInformation(event) {
         });
          
 }
+
+$(document).ready(fetchGitHubInformation); // place this as when the page loads to display the information of default input value="octocat"
