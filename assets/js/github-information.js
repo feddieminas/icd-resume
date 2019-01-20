@@ -38,7 +38,7 @@ function repoInformationHTML(repos) {
 
 
 function fetchGitHubInformation(event) {
-    $("#gh-user-data").html(""); // do to reset data every time is called. like an i=0 
+    $("#gh-user-data").html(""); // do to reset data every time is called
     $("#gh-repo-data").html("");
     
     var username = $("#gh-username").val();
@@ -73,7 +73,10 @@ function fetchGitHubInformation(event) {
         }, function(errorResponse) {
             if(errorResponse.status === 404) {
                 $("#gh-user-data").html(
-                    `<h2>No info found for user ${username}</h2>`);
+                    `<h2>No info found for user ${username}</h2>`); // if on search name on input value, not any retrieved info exists 
+            } else if(errorResponse.status === 403) { // 403 means forbidden. We use that statement for throttling to prevent many api calls
+                var resetTime = new Date(errorResponse.getResponseHeader('X-RateLimit-Reset')*1000);
+                $("#gh-user-data").html(`<h4>Too many requests, please wait until ${resetTime.toLocaleTimeString()}</h4>`);
             } else {
                 console.log(errorResponse);
                 $("#gh-user-data").html(
